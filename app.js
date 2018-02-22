@@ -12,7 +12,7 @@ var scores, roundScore, activePlayer, gamePlaying, scorePrompt;
 
 reset();
 
-
+var lastDice, lastDice2;
 
 document.querySelector('.btn-roll').addEventListener('click', function btn() {
         if (gamePlaying){
@@ -27,8 +27,13 @@ document.querySelector('.btn-roll').addEventListener('click', function btn() {
         var diceDom2 = document.querySelector('.dice2');
         diceDom2.style.display = 'block';
         diceDom2.src = 'dice-' + dice2 + '.png';
-
-        if (dice !== 1 || dice2 !==1) {
+        //Player loses total score if they roll a six twice in a row   
+        if ((dice === 6 && lastDice === 6) || (dice2 === 6 && lastDice2 === 6)) {
+            scores[activePlayer] = 0;
+            document.querySelector('#score-' + activePlayer).textContent = '0';
+            nextPlayer();
+        //player loses round score if they roll a 1    
+        } else if (dice !== 1 || dice2 !==1) {
             //add scoe
             roundScore += dice + dice2;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
@@ -38,6 +43,9 @@ document.querySelector('.btn-roll').addEventListener('click', function btn() {
             nextPlayer();
 
         } 
+        
+        lastDice = dice;
+        lastDice2 = dice2;
     }
      
 });
